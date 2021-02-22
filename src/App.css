@@ -1,38 +1,57 @@
-.App {
-  text-align: center;
+.container {
+  margin: 0 auto;
+  padding: 64px 16px 32px 16px;
+  max-width: 600px;
+  width: 100%;
 }
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-bottom: 2em
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+/* .calendar {
+  border: 1px solid black;
+  border-radius: 5px;
+  padding: 1em;
+} */
+
+.hour-box {
+  display: grid;
+  grid-template-columns: 3.5em auto;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.times {
   display: flex;
   flex-direction: column;
+}
+
+.col-center {
+  display: flex;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  justify-content: flex-end;
+  white-space: nowrap;
+  margin-right: 1em;
 }
 
-.App-link {
-  color: #61dafb;
+.slot {
+  min-height: 20px;
+  width: 100%;
+  border-radius: 5px;
+  margin: 2px 0;
+  cursor: pointer;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.slot:hover {
+  background-color: #ededed;
+}
+
+.half-hour-div {
+  border-bottom: 1px solid #cdcdcd;
+}
+
+.hour-div {
+  border-top: 1px solid #7a7a7a;
 }
