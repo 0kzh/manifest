@@ -12,20 +12,20 @@
   margin-bottom: 2em
 }
 
-/* .calendar {
-  border: 1px solid black;
-  border-radius: 5px;
-  padding: 1em;
-} */
+.calendar {
+  position: relative;
+}
 
 .hour-box {
   display: grid;
   grid-template-columns: 3.5em auto;
+  height: 100%;
 }
 
 .times {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .col-center {
@@ -44,7 +44,7 @@
   cursor: pointer;
 }
 
-.slot:hover {
+.slot-bg:hover {
   background-color: #ededed;
 }
 
@@ -54,4 +54,10 @@
 
 .hour-div {
   border-top: 1px solid #7a7a7a;
+}
+
+.content {
+  position: absolute;
+  width: 100%;
+  top: 0;
 }
