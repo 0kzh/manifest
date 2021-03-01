@@ -1,6 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Resizable } from "re-resizable";
+import { Rnd } from "react-rnd";
 
 interface Props {}
 
@@ -15,25 +15,28 @@ const Entry = styled.div`
     top: 2px;
 `
 
-
 const Event: React.FC<Props> = (props: Props) => {
     const {} = props
 
     return (
-        <Resizable
+        <Rnd
             style={style}
-            defaultSize={{
+            default={{
+                x: 0,
+                y: 0,
                 width: '100%',
                 height: 20
             }}
-            grid={[0, 25]}
-            enable={{ top: false, right: false, bottom: true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
+            resizeGrid={[0, 25]}
+            dragGrid={[1, 25]}
+            dragAxis={'y'}
+            enableResizing={{ top: false, right: false, bottom: true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
         >
             <div className="hour-box">
                 <div></div>
                 <Entry className="slot"></Entry> 
             </div>
-        </Resizable>
+        </Rnd>
     )
 }
 
