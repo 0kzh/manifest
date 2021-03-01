@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { range, convert24HTo12H } from '../../util/helper'
 import Event from './Event'
@@ -14,6 +14,11 @@ const Row = styled.div`
     grid-template-columns: 3.5em auto
 `
 
+type EventData = {
+    start: number
+    end: number
+}
+
 const Calendar: React.FC<Props> = (props: Props) => {
     const {} = props
 
@@ -21,7 +26,19 @@ const Calendar: React.FC<Props> = (props: Props) => {
     const endHour = 23
     
     const hours = range(startHour, endHour)
-    console.log(hours)
+    const [events, setEvents] = useState<EventData[]>([])
+
+    const addEvent = (startHour: number, isHalfHour: boolean) => {
+        const startTime = startHour + (isHalfHour ? 0.5 : 0.0)
+        const newEvent: EventData = {
+            start: startTime,
+            end: startTime + 0.5
+        }
+
+        if (events) {
+            setEvents([...events, newEvent])
+        }
+    }
 
     return (
         <div className="calendar">
@@ -32,17 +49,19 @@ const Calendar: React.FC<Props> = (props: Props) => {
                             {convert24HTo12H(hour)}
                         </div>
                         <div className="times">
-                                {i === 0 && <span className="hour-div"></span>}
+                                {i === 0 && <span className="hour-div" />}
 
-                                <div className="slot slot-bg"></div>
-                                <span className="half-hour-div"></span>
-                                <div className="slot slot-bg"></div>
-                                <span className="hour-div"></span>
+                                <div className="slot slot-bg" onClick={() => addEvent(hour, false)}/>
+                                <span className="half-hour-div" />
+                                <div className="slot slot-bg" onClick={() => addEvent(hour, true)}/>
+                                <span className="hour-div" />
                         </div>
                     </Row>
                 )}
             </BG>
-            <Event />
+            {events && events.map(event => 
+                <Event start={event.start} end={event.end} baseHour={startHour} />
+            )}
         </div>
     )
 }
