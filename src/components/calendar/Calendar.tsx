@@ -44,7 +44,7 @@ const Calendar: React.FC<Props> = (props: Props) => {
         <div className="calendar">
             <BG>
                 {hours.map((hour, i) => 
-                    <Row>
+                    <Row key={`hour_${i}`}>
                         <div className="col-center">
                             {convert24HTo12H(hour)}
                         </div>
@@ -59,8 +59,8 @@ const Calendar: React.FC<Props> = (props: Props) => {
                     </Row>
                 )}
             </BG>
-            {events && events.map(event => 
-                <Event start={event.start} end={event.end} baseHour={startHour} />
+            {events && events.map((event, i) => 
+                <Event key={`event_${i}`} start={event.start} end={event.end} baseHour={startHour} />
             )}
         </div>
     )

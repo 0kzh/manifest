@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useRef } from 'react';
 import styled from 'styled-components';
 import { Rnd } from "react-rnd";
 
@@ -17,13 +17,35 @@ const style = {
 const Entry = styled.div`
     background: black;
     top: 2px;
+    color: white;
+    padding: 1px 10px;
+    width: auto;
+`
+
+const Input = styled.input`
+    background: transparent;
+    border: none;
+    outline: none;
+    color: white;
+    width: 100%;
 `
 
 const Event: React.FC<Props> = (props: Props) => {
     const {start, end, baseHour} = props
+    const inputRef = useRef<HTMLInputElement>(null);
 
     const moveStep = 25
     const rowHeight = 20
+
+    useEffect(() => {
+        focusInput()
+    }, [])
+
+    const focusInput = () => {
+        if (inputRef && inputRef.current) {
+            inputRef.current.focus()
+        }
+    }
 
     return (
         <Rnd
@@ -37,11 +59,13 @@ const Event: React.FC<Props> = (props: Props) => {
             resizeGrid={[0, moveStep]}
             dragGrid={[1, moveStep]}
             dragAxis={'y'}
-            enableResizing={{ top: true, right: false, bottom: true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
+            enableResizing={{ top: false, right: false, bottom: true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
         >
             <div className="hour-box">
                 <div></div>
-                <Entry className="slot"></Entry> 
+                <Entry className="slot" onClick={focusInput}>
+                    <Input ref={inputRef} type="text" spellCheck={false} />    
+                </Entry> 
             </div>
         </Rnd>
     )
