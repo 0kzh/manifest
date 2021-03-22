@@ -1,11 +1,11 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Rnd } from "react-rnd";
-
+import { EventData } from '../../util/types'
 interface Props {
-    start: number
-    end: number
+    event: EventData
     baseHour: number
+    setTextForEvent: (newText: string) => void
 }
 
 const style = {
@@ -39,7 +39,7 @@ const Input = styled.input`
 `
 
 const Event: React.FC<Props> = (props: Props) => {
-    const {start, end, baseHour} = props
+    const { event, baseHour, setTextForEvent } = props
 
     const [focused, setFocused] = useState(false);
     const [isDragAndDrop, setIsDragAndDrop] = useState(false);
@@ -49,7 +49,9 @@ const Event: React.FC<Props> = (props: Props) => {
     const rowHeight = 20
 
     useEffect(() => {
-        focusInput()
+        if (!event.text) {
+            focusInput()
+        }
     }, [])
 
     const focusInput = () => {
@@ -64,7 +66,7 @@ const Event: React.FC<Props> = (props: Props) => {
             style={style}
             default={{
                 x: 0,
-                y: moveStep * (start - baseHour) * 2,
+                y: moveStep * (event.start - baseHour) * 2,
                 width: '100%',
                 height: rowHeight
             }}
@@ -82,7 +84,10 @@ const Event: React.FC<Props> = (props: Props) => {
                     onMouseMove={() => setIsDragAndDrop(true)}
                     onMouseUp={() => {
                         if (!isDragAndDrop) {
-                            focusInput()
+                            setFocused(true)
+                            setTimeout(() => {
+                                focusInput()
+                            })
                         } 
                     }}
                     onFocus={() => setFocused(true)}
@@ -92,10 +97,10 @@ const Event: React.FC<Props> = (props: Props) => {
                         ref={inputRef}
                         type="text"
                         spellCheck={false}
-                        disabled={!focused && isDragAndDrop}
-                        onMouseDown={(e) => e.stopPropagation()}
-                        onMouseMove={(e) => e.stopPropagation()}
-                        onMouseUp={(e) => e.stopPropagation()}
+                        disabled={!focused}
+                        value={event.text}
+                        onChange={(e) => setTextForEvent(e.target.value)}
+                        onMouseUp={(e) => focused ? e.stopPropagation() : () => {}}
                     />    
                 </Entry> 
             </div>

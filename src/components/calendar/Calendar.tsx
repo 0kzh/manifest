@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { range, convert24HTo12H } from '../../util/helper'
+import { EventData } from '../../util/types'
+import { v4 as uuid4 } from 'uuid';
 import Event from './Event'
 
 interface Props {}
@@ -14,11 +16,6 @@ const Row = styled.div`
     grid-template-columns: 3.5em auto
 `
 
-type EventData = {
-    start: number
-    end: number
-}
-
 const Calendar: React.FC<Props> = (props: Props) => {
     const {} = props
 
@@ -28,11 +25,27 @@ const Calendar: React.FC<Props> = (props: Props) => {
     const hours = range(startHour, endHour)
     const [events, setEvents] = useState<EventData[]>([])
 
+    // on initial load, get events from localStorage
+    useEffect(() => {
+        const persistedEvents: string | null = localStorage.getItem("events")
+        if (persistedEvents) {
+            const loadedEvents: EventData[] = JSON.parse(persistedEvents)
+            setEvents(loadedEvents)
+        }
+    }, [])
+
+    // on change of events, persist to localStorage    
+    useEffect(() => {
+        localStorage.setItem("events", JSON.stringify(events))
+    }, [events])
+
     const addEvent = (startHour: number, isHalfHour: boolean) => {
         const startTime = startHour + (isHalfHour ? 0.5 : 0.0)
         const newEvent: EventData = {
+            id: uuid4(),
             start: startTime,
-            end: startTime + 0.5
+            end: startTime + 0.5,
+            text: ''
         }
 
         if (events) {
@@ -60,7 +73,19 @@ const Calendar: React.FC<Props> = (props: Props) => {
                 )}
             </BG>
             {events && events.map((event, i) => 
-                <Event key={`event_${i}`} start={event.start} end={event.end} baseHour={startHour} />
+                <Event 
+                    key={`event_${i}`} 
+                    event={event}
+                    baseHour={startHour}
+                    setTextForEvent={(newText: string) => {
+                        const newEvents = [...events]
+                        let newEvent = newEvents.find(ev => ev.id === event.id)
+                        if (newEvent) {
+                            newEvent.text = newText
+                        }
+                        setEvents(newEvents)
+                    }}
+                />
             )}
         </div>
     )
