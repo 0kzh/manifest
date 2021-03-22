@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Rnd } from "react-rnd";
 
@@ -32,10 +32,17 @@ const Input = styled.input`
     outline: none;
     color: white;
     width: 100%;
+
+    &:not(:focus) {
+        cursor: pointer;
+    }
 `
 
 const Event: React.FC<Props> = (props: Props) => {
     const {start, end, baseHour} = props
+
+    const [focused, setFocused] = useState(false);
+    const [isDragAndDrop, setIsDragAndDrop] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
 
     const moveStep = 25
@@ -48,6 +55,7 @@ const Event: React.FC<Props> = (props: Props) => {
     const focusInput = () => {
         if (inputRef && inputRef.current) {
             inputRef.current.focus()
+            inputRef.current.select()
         }
     }
 
@@ -68,8 +76,27 @@ const Event: React.FC<Props> = (props: Props) => {
         >
             <div className="hour-box">
                 <div></div>
-                <Entry className="slot" onClick={focusInput}>
-                    <Input ref={inputRef} type="text" spellCheck={false} />    
+                <Entry
+                    className="slot"
+                    onMouseDown={() => setIsDragAndDrop(false)}
+                    onMouseMove={() => setIsDragAndDrop(true)}
+                    onMouseUp={() => {
+                        if (!isDragAndDrop) {
+                            focusInput()
+                        } 
+                    }}
+                    onFocus={() => setFocused(true)}
+                    onBlur={() => setFocused(false)}
+                >
+                    <Input
+                        ref={inputRef}
+                        type="text"
+                        spellCheck={false}
+                        disabled={!focused && isDragAndDrop}
+                        onMouseDown={(e) => e.stopPropagation()}
+                        onMouseMove={(e) => e.stopPropagation()}
+                        onMouseUp={(e) => e.stopPropagation()}
+                    />    
                 </Entry> 
             </div>
         </Rnd>
