@@ -63,6 +63,7 @@ const Event: React.FC<Props> = (props: Props) => {
             resizeGrid={[0, moveStep]}
             dragGrid={[1, moveStep]}
             dragAxis={'y'}
+            bounds={'parent'}
             enableResizing={{ top: false, right: false, bottom: true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
         >
             <div className="hour-box">
