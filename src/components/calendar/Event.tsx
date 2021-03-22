@@ -18,12 +18,16 @@ const Entry = styled.div`
     background: black;
     top: 2px;
     color: white;
-    padding: 1px 10px;
+    padding: 0px 10px;
     width: auto;
 `
 
 const Input = styled.input`
     background: transparent;
+    font-size: 12px;
+    font-family: mono, monospace;
+    font-weight: bold;
+    margin-top: 2px;
     border: none;
     outline: none;
     color: white;
