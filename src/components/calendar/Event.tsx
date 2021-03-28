@@ -10,7 +10,7 @@ interface Props {
     event: EventData
     baseTime: number
     updateEvent: (newEvent: EventData) => void
-    deleteEvent: () => void
+    deleteEvent: (id: string) => void
 }
 
 const style = {
@@ -68,7 +68,7 @@ const Event: React.FC<Props> = (props: Props) => {
         {
             icon: <Trash style={{ height: 12, width: 12 }}/>,
             text: "Delete",
-            onClick: deleteEvent
+            onClick: () => deleteEvent(event.id)
         }
     ]
 

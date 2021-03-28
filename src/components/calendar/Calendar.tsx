@@ -73,15 +73,15 @@ const Calendar: React.FC<Props> = (props: Props) => {
             </BG>
             {events && events.map((event, i) => 
                 <Event 
-                    key={`event_${i}`} 
+                    key={`event_${event.id}`} 
                     event={event}
                     baseTime={startTime}
                     updateEvent={(newEvent: EventData) => {
                         const newEvents = events.map(e => e.id === event.id ? newEvent : e)
                         setEvents(newEvents)
                     }}
-                    deleteEvent={() => {
-                        const newEvents = events.filter(e => e.id !== event.id)
+                    deleteEvent={(id: string) => {
+                        const newEvents = events.filter(e => e.id !== id)
                         setEvents(newEvents)
                     }}
                 />
