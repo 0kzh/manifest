@@ -5,7 +5,7 @@ import { EventData } from '../../util/types'
 interface Props {
     event: EventData
     baseHour: number
-    setTextForEvent: (newText: string) => void
+    updateEvent: (newEvent: EventData) => void
 }
 
 const style = {
@@ -39,7 +39,7 @@ const Input = styled.input`
 `
 
 const Event: React.FC<Props> = (props: Props) => {
-    const { event, baseHour, setTextForEvent } = props
+    const { event, baseHour, updateEvent } = props
 
     const [focused, setFocused] = useState(false);
     const [isDragAndDrop, setIsDragAndDrop] = useState(false);
@@ -47,6 +47,9 @@ const Event: React.FC<Props> = (props: Props) => {
 
     const moveStep = 25
     const rowHeight = 20
+
+    // 1.25 takes into account the padding that contributes to the height
+    const paddingMultiplier = 1.25
 
     useEffect(() => {
         if (!event.text) {
@@ -68,13 +71,30 @@ const Event: React.FC<Props> = (props: Props) => {
                 x: 0,
                 y: moveStep * (event.start - baseHour) * 2,
                 width: '100%',
-                height: rowHeight
+                height: rowHeight * (event.end - event.start) * 2 * paddingMultiplier
             }}
             resizeGrid={[0, moveStep]}
             dragGrid={[1, moveStep]}
             dragAxis={'y'}
             bounds={'parent'}
             enableResizing={{ top: false, right: false, bottom: true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
+            onDragStop={(_, d) => {
+                const step = Math.round(d.y / moveStep)
+                const newStartTime = baseHour + (step / 2)
+                
+                const newEvent = event
+                newEvent.end = event.end + (newStartTime - event.start)
+                newEvent.start = newStartTime
+                updateEvent(newEvent)
+            }}
+            onResizeStop={(_, direc, ref, delta, pos) => {
+                const span = parseInt(ref.style.height, 10) / rowHeight / paddingMultiplier
+                const newEndTime = event.start + (span / 2)
+                
+                const newEvent = event
+                newEvent.end = newEndTime
+                updateEvent(newEvent)
+            }}
         >
             <div className="hour-box">
                 <div></div>
@@ -99,7 +119,11 @@ const Event: React.FC<Props> = (props: Props) => {
                         spellCheck={false}
                         disabled={!focused}
                         value={event.text}
-                        onChange={(e) => setTextForEvent(e.target.value)}
+                        onChange={(e) => {
+                            const newEvent = event
+                            newEvent.text = e.target.value
+                            updateEvent(newEvent)
+                        }}
                         onMouseUp={(e) => focused ? e.stopPropagation() : () => {}}
                     />    
                 </Entry> 

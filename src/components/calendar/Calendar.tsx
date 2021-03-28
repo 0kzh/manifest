@@ -77,12 +77,8 @@ const Calendar: React.FC<Props> = (props: Props) => {
                     key={`event_${i}`} 
                     event={event}
                     baseHour={startHour}
-                    setTextForEvent={(newText: string) => {
-                        const newEvents = [...events]
-                        let newEvent = newEvents.find(ev => ev.id === event.id)
-                        if (newEvent) {
-                            newEvent.text = newText
-                        }
+                    updateEvent={(newEvent: EventData) => {
+                        const newEvents = events.map(e => e.id === event.id ? newEvent : e)
                         setEvents(newEvents)
                     }}
                 />
