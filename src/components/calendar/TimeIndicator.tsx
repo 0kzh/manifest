@@ -31,7 +31,8 @@ const TimeIndicator = (props: Props) => {
         position: 'absolute',
         width: '100%',
         top: y,
-        visibility: y && y >= 0 ? 'visible' : 'hidden'
+        visibility: y && y >= 0 ? 'visible' : 'hidden',
+        height: 'auto'
     } as const
 
     return (
