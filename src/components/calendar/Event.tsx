@@ -1,12 +1,16 @@
 import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Rnd } from "react-rnd";
-import { EventData } from '../../util/types'
+import { EventData, ContextMenuItem } from '../../util/types'
 import { moveStep, rowHeight, paddingMultiplier } from '../../util/constants'
+import ContextMenu from '../ContextMenu'
+import { Trash }from "heroicons-react";
+
 interface Props {
     event: EventData
     baseTime: number
     updateEvent: (newEvent: EventData) => void
+    deleteEvent: () => void
 }
 
 const style = {
@@ -40,11 +44,12 @@ const Input = styled.input`
 `
 
 const Event: React.FC<Props> = (props: Props) => {
-    const { event, baseTime, updateEvent } = props
+    const { event, baseTime, updateEvent, deleteEvent } = props
 
     const [focused, setFocused] = useState(false);
     const [isDragAndDrop, setIsDragAndDrop] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
         if (!event.text) {
@@ -58,6 +63,14 @@ const Event: React.FC<Props> = (props: Props) => {
             inputRef.current.select()
         }
     }
+
+    const menuItems: ContextMenuItem[] = [
+        {
+            icon: <Trash style={{ height: 12, width: 12 }}/>,
+            text: "Delete",
+            onClick: deleteEvent
+        }
+    ]
 
     return (
         <Rnd
@@ -95,9 +108,11 @@ const Event: React.FC<Props> = (props: Props) => {
                 <div></div>
                 <Entry
                     className="slot"
-                    onMouseDown={() => setIsDragAndDrop(false)}
-                    onMouseMove={() => setIsDragAndDrop(true)}
-                    onMouseUp={() => {
+                    ref={containerRef}
+                    onMouseDown={(e) => e.button === 0 && setIsDragAndDrop(false)}
+                    onMouseMove={(e) => e.button === 0 && setIsDragAndDrop(true)}
+                    onMouseUp={(e) => {
+                        if (e.button !== 0) return
                         if (!isDragAndDrop) {
                             setFocused(true)
                             setTimeout(() => {
@@ -119,10 +134,14 @@ const Event: React.FC<Props> = (props: Props) => {
                             newEvent.text = e.target.value
                             updateEvent(newEvent)
                         }}
-                        onMouseUp={(e) => focused ? e.stopPropagation() : () => {}}
+                        onMouseUp={(e) => e.button === 0 && (focused ? e.stopPropagation() : () => {})}
                     />    
                 </Entry> 
             </div>
+            <ContextMenu
+                parentRef={containerRef}
+                items={menuItems}
+            />
         </Rnd>
     )
 }

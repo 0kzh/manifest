@@ -80,6 +80,10 @@ const Calendar: React.FC<Props> = (props: Props) => {
                         const newEvents = events.map(e => e.id === event.id ? newEvent : e)
                         setEvents(newEvents)
                     }}
+                    deleteEvent={() => {
+                        const newEvents = events.filter(e => e.id !== event.id)
+                        setEvents(newEvents)
+                    }}
                 />
             )}
             <TimeIndicator />
