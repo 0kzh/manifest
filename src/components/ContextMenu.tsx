@@ -20,23 +20,32 @@ const ContextMenu = (props: Props)  => {
             return
         }
         
-        const showMenu = (event: MouseEvent) => {
-            event.preventDefault()
-            setIsVisible(true)
-            setX(event.clientX - parent.getBoundingClientRect().left)
-            setY(event.clientY - parent.getBoundingClientRect().top)
+        const showMenu = (e: MouseEvent) => {
+            if (e.button == 2) { // if right click
+                setIsVisible(true)
+                setX(e.clientX - parent.getBoundingClientRect().left)
+                setY(e.clientY - parent.getBoundingClientRect().top)
+            }
         }
 
         const closeMenu = () => {
             setIsVisible(false)
         }
 
-        parent.addEventListener('contextmenu', showMenu)
+        const preventDefault = (e: MouseEvent) => {
+            e.preventDefault()
+        }
+
+        parent.addEventListener('mouseup', showMenu)
+        parent.addEventListener('contextmenu', preventDefault)
         window.addEventListener('click', closeMenu)
+        window.addEventListener('contextmenu', closeMenu)
 
         return function cleanup() {
-            parent.removeEventListener('contextmenu', showMenu)
+            parent.removeEventListener('mouseup', showMenu)
+            parent.removeEventListener('contextmenu', preventDefault)
             window.removeEventListener('click', closeMenu)
+            window.removeEventListener('contextmenu', closeMenu)
         }
     })
 
