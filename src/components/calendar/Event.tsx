@@ -46,8 +46,10 @@ const Input = styled.input`
 const Event: React.FC<Props> = (props: Props) => {
     const { event, baseTime, updateEvent, deleteEvent } = props
 
-    const [focused, setFocused] = useState(false);
-    const [isDragAndDrop, setIsDragAndDrop] = useState(false);
+    const [focused, setFocused] = useState<boolean>(false);
+    const [isDragAndDrop, setIsDragAndDrop] = useState<boolean>(false);
+    const [resizable, setResizable] = useState<boolean>(false);
+
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
@@ -85,7 +87,16 @@ const Event: React.FC<Props> = (props: Props) => {
             dragGrid={[1, moveStep]}
             dragAxis={'y'}
             bounds={'parent'}
-            enableResizing={{ top: false, right: false, bottom: true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
+            enableResizing={{ 
+                top: false, 
+                right: false, 
+                bottom: resizable && true, 
+                left: false, 
+                topRight: false, 
+                bottomRight: false, 
+                bottomLeft: false, 
+                topLeft: false
+            }}
             onDragStop={(_, d) => {
                 const step = Math.round(d.y / moveStep)
                 const newStartTime = baseTime + (step / 2)
@@ -141,6 +152,9 @@ const Event: React.FC<Props> = (props: Props) => {
             <ContextMenu
                 parentRef={containerRef}
                 items={menuItems}
+                // this hack is needed as the resize event fights with the `click` event on the contextMenu
+                // because of this, we disable resizing when the contextMenu is open
+                setContextMenuOpen={(isOpen: boolean) => setResizable(!isOpen)}
             />
         </Rnd>
     )

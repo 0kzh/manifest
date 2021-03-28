@@ -5,14 +5,19 @@ import { ContextMenuItem } from '../util/types'
 interface Props {
     parentRef: React.RefObject<any>
     items: ContextMenuItem[]
+    setContextMenuOpen: (isOpen: boolean) => void
 }
 
 const ContextMenu = (props: Props)  => {
-    const { parentRef, items } = props
+    const { parentRef, items, setContextMenuOpen } = props
 
     const [isVisible, setIsVisible] = useState<boolean>(false)
     const [x, setX] = useState<number>(0)
     const [y, setY] = useState<number>(0)
+
+    useEffect(() => {
+        setContextMenuOpen(isVisible)
+    }, [isVisible])
 
     useEffect(() => {
         const parent = parentRef.current
