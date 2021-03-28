@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { range, convert24HTo12H } from '../../util/helper'
 import { EventData } from '../../util/types'
+import { startTime, endTime } from '../../util/constants'
 import { v4 as uuid4 } from 'uuid';
 import Event from './Event'
+import TimeIndicator from './TimeIndicator'
 
 interface Props {}
 
@@ -18,11 +20,8 @@ const Row = styled.div`
 
 const Calendar: React.FC<Props> = (props: Props) => {
     const {} = props
-
-    const startHour = 8
-    const endHour = 23
     
-    const hours = range(startHour, endHour)
+    const hours = range(startTime, endTime)
     const [events, setEvents] = useState<EventData[]>([])
 
     // on initial load, get events from localStorage
@@ -76,13 +75,14 @@ const Calendar: React.FC<Props> = (props: Props) => {
                 <Event 
                     key={`event_${i}`} 
                     event={event}
-                    baseHour={startHour}
+                    baseTime={startTime}
                     updateEvent={(newEvent: EventData) => {
                         const newEvents = events.map(e => e.id === event.id ? newEvent : e)
                         setEvents(newEvents)
                     }}
                 />
             )}
+            <TimeIndicator />
         </div>
     )
 }

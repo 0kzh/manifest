@@ -17,6 +17,25 @@ export const convert24HTo12H = (timeIn24H: number): string => {
     return `${hour} ${isPM ? "PM" : "AM"}`
 }
 
+export const timeToDateObject = (time: number): Date => {
+    const hour = Math.floor(time)
+    const minutes = (time % 1) * 60
+
+    const date = new Date()
+    date.setHours(hour)
+    date.setMinutes(minutes)
+    date.setSeconds(0)
+
+    return date
+}
+
+export const dateToNumber = (date: Date): number => {
+    const hour = date.getHours()
+    const minutes = date.getMinutes() / 60
+
+    return hour + minutes
+}
+
 export const getDate = (): string => {
     const date = new Date()
     return date.toLocaleString('default', { day: 'numeric', month: 'short', year: 'numeric' });

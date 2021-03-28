@@ -2,9 +2,10 @@ import React, { useEffect, useState, useRef } from 'react';
 import styled from 'styled-components';
 import { Rnd } from "react-rnd";
 import { EventData } from '../../util/types'
+import { moveStep, rowHeight, paddingMultiplier } from '../../util/constants'
 interface Props {
     event: EventData
-    baseHour: number
+    baseTime: number
     updateEvent: (newEvent: EventData) => void
 }
 
@@ -39,17 +40,11 @@ const Input = styled.input`
 `
 
 const Event: React.FC<Props> = (props: Props) => {
-    const { event, baseHour, updateEvent } = props
+    const { event, baseTime, updateEvent } = props
 
     const [focused, setFocused] = useState(false);
     const [isDragAndDrop, setIsDragAndDrop] = useState(false);
     const inputRef = useRef<HTMLInputElement>(null);
-
-    const moveStep = 25
-    const rowHeight = 20
-
-    // 1.25 takes into account the padding that contributes to the height
-    const paddingMultiplier = 1.25
 
     useEffect(() => {
         if (!event.text) {
@@ -69,7 +64,7 @@ const Event: React.FC<Props> = (props: Props) => {
             style={style}
             default={{
                 x: 0,
-                y: moveStep * (event.start - baseHour) * 2,
+                y: moveStep * (event.start - baseTime) * 2,
                 width: '100%',
                 height: rowHeight * (event.end - event.start) * 2 * paddingMultiplier
             }}
@@ -80,7 +75,7 @@ const Event: React.FC<Props> = (props: Props) => {
             enableResizing={{ top: false, right: false, bottom: true, left:false, topRight:false, bottomRight:false, bottomLeft:false, topLeft:false }}
             onDragStop={(_, d) => {
                 const step = Math.round(d.y / moveStep)
-                const newStartTime = baseHour + (step / 2)
+                const newStartTime = baseTime + (step / 2)
                 
                 const newEvent = event
                 newEvent.end = event.end + (newStartTime - event.start)
