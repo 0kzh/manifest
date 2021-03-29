@@ -90,3 +90,16 @@
   cursor: pointer;
   user-select: none;
 }
+
+.react-datepicker__day--selected {
+  background-color: black !important;
+}
+
+.react-datepicker__day--keyboard-selected, .react-datepicker__month-text--keyboard-selected, .react-datepicker__quarter-text--keyboard-selected, .react-datepicker__year-text--keyboard-selected {
+  background-color: transparent !important;
+  color: black !important;
+}
+
+.react-datepicker__day {
+  outline: none;
+}

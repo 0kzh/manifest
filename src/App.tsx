@@ -47,6 +47,7 @@ function App() {
                 selected={date}
                 onChange={(date: Date) => setDate(date)} 
                 customInput={<DateDisplay onClick={() => {}} />}
+                dayClassName={_ => "day"}
               />
             </div>
             <ChevronRightOutline onClick={nextDay} className="icon-circular caret" />
