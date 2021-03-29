@@ -85,3 +85,8 @@
 .icon-circular:hover {
   background-color: rgb(242, 242, 247);
 }
+
+.date-display {
+  cursor: pointer;
+  user-select: none;
+}
