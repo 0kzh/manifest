@@ -33,7 +33,7 @@ const Calendar: React.FC<Props> = (props: Props) => {
         if (persistedEvents) {
             loadedEvents = JSON.parse(persistedEvents)
         }
-        
+
         setEvents(loadedEvents)
     }, [curDay])
 
@@ -62,7 +62,7 @@ const Calendar: React.FC<Props> = (props: Props) => {
                 {hours.map((hour, i) => 
                     <Row key={`hour_${i}`}>
                         <div className="col-center">
-                            {convert24HTo12H(hour)}
+                            <span className="hour">{convert24HTo12H(hour)}</span>
                         </div>
                         <div className="times">
                                 {i === 0 && <span className="hour-div" />}
