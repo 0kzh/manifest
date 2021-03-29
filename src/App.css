@@ -70,3 +70,18 @@
 .vert-center {
   align-items: center;
 }
+
+.caret {
+  width: 12px;
+  height: 12px;
+}
+
+.icon-circular {
+  border-radius: 50%;
+  cursor: pointer;
+  padding: 3px;
+}
+
+.icon-circular:hover {
+  background-color: rgb(242, 242, 247);
+}

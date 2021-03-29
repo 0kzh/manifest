@@ -1,13 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { range, convert24HTo12H } from '../../util/helper'
+import { range, convert24HTo12H, generateKey } from '../../util/helper'
 import { EventData } from '../../util/types'
 import { startTime, endTime } from '../../util/constants'
 import { v4 as uuid4 } from 'uuid';
 import Event from './Event'
 import TimeIndicator from './TimeIndicator'
 
-interface Props {}
+interface Props {
+    curDay: Date
+}
 
 const BG = styled.div`
     position: relative;
@@ -19,23 +21,25 @@ const Row = styled.div`
 `
 
 const Calendar: React.FC<Props> = (props: Props) => {
-    const {} = props
+    const { curDay } = props
     
     const hours = range(startTime, endTime)
     const [events, setEvents] = useState<EventData[]>([])
 
     // on initial load, get events from localStorage
     useEffect(() => {
-        const persistedEvents: string | null = localStorage.getItem("events")
+        let loadedEvents: EventData[] = []
+        const persistedEvents: string | null = localStorage.getItem(generateKey(curDay))
         if (persistedEvents) {
-            const loadedEvents: EventData[] = JSON.parse(persistedEvents)
-            setEvents(loadedEvents)
+            loadedEvents = JSON.parse(persistedEvents)
         }
-    }, [])
+        
+        setEvents(loadedEvents)
+    }, [curDay])
 
     // on change of events, persist to localStorage    
     useEffect(() => {
-        localStorage.setItem("events", JSON.stringify(events))
+        localStorage.setItem(generateKey(curDay), JSON.stringify(events))
     }, [events])
 
     const addEvent = (startHour: number, isHalfHour: boolean) => {

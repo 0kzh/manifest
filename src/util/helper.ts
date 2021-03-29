@@ -23,7 +23,11 @@ export const dateToNumber = (date: Date): number => {
     return hour + decimal
 }
 
-export const getDate = (): string => {
-    const date = new Date()
+export const formatDate = (date: Date): string => {
     return date.toLocaleString('default', { day: 'numeric', month: 'short', year: 'numeric' });
+}
+
+export const generateKey = (date: Date): string => {
+    const serializedISODate = date.getFullYear()+'-' + (date.getMonth()+1) + '-'+date.getDate()
+    return `events-${serializedISODate}`
 }
