@@ -1,4 +1,4 @@
-import React, { useState, useEffect, forwardRef } from "react";
+import React, { useState, useEffect, useRef, forwardRef } from "react";
 import Calendar from "./components/calendar/Calendar";
 import DatePicker from "react-datepicker";
 import { range, convert24HTo12H, formatDate } from "./util/helper";
@@ -12,6 +12,9 @@ function App() {
   const [startTime, setStartTime] = useState<number>(DEFAULT_START_TIME);
   const [endTime, setEndTime] = useState<number>(DEFAULT_END_TIME);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+
+  const settingsRef = useRef<HTMLDivElement>(null);
+  const settingsBtnRef = useRef<HTMLDivElement>(null);
 
   const prevDay = () => {
     const newDate = new Date()
@@ -44,6 +47,21 @@ function App() {
     localStorage.setItem("end_time", JSON.stringify(endTime))
   }, [startTime, endTime])
 
+  // custom listener to close settings if clicking outside of it
+  useEffect(() => {
+      const handleClickOutside = (event: MouseEvent) => {
+          if (settingsRef.current && !settingsRef.current.contains(event.target as HTMLElement) &&
+              settingsBtnRef.current && !settingsBtnRef.current.contains(event.target as HTMLElement)) {
+              setSettingsOpen(false)
+          }
+      }
+
+      document.addEventListener("mousedown", handleClickOutside);
+      return () => {
+          document.removeEventListener("mousedown", handleClickOutside);
+      };
+  }, [settingsRef, settingsBtnRef]);
+
   interface IPropInput {
     onClick: (date: any) => void;
   }
@@ -61,32 +79,32 @@ function App() {
       <div className="header">
           <div className="flex-row vert-center">
             <b>Daily Manifest</b>
-            <Cog
-              className="icon-circular settings" 
+            <div
+              ref={settingsBtnRef}
               onClick={() => setSettingsOpen(!settingsOpen)}
-            />
+            >
+              <Cog className="icon-circular settings" />
+            </div>
 
             {
               settingsOpen &&
-              <div className="time-select">
+              <div className="time-select" ref={settingsRef} onBlur={() => setSettingsOpen(false)}>
                 <label>Start Time</label>
-                <select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStartTime(parseInt(e.target.value))}>
-                  {range(0, 23).map((hour, i) => 
-                    <option
-                      value={hour} 
-                      selected={startTime === hour}>
-                        {convert24HTo12H(hour)}
-                    </option>
+                <select 
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setStartTime(parseInt(e.target.value))}
+                  defaultValue={startTime}
+                >
+                  {range(0, 23).map(hour => 
+                    <option key={`start_opt_${hour}`} value={hour}>{convert24HTo12H(hour)}</option>
                   )}
                 </select>
                 <label>End Time</label>
-                <select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setEndTime(parseInt(e.target.value))}>
-                  {range(startTime + 1, 23).map((hour, i) => 
-                    <option
-                      value={hour} 
-                      selected={endTime === hour}>
-                        {convert24HTo12H(hour)}
-                    </option>
+                <select
+                  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setEndTime(parseInt(e.target.value))}
+                  defaultValue={endTime}
+                >
+                  {range(startTime + 1, 23).map(hour => 
+                    <option key={`end_opt_${hour}`} value={hour}>{convert24HTo12H(hour)}</option>
                   )}
                 </select>
               </div>
@@ -109,5 +127,6 @@ function App() {
     </div>
   );
 }
+
 
 export default App;

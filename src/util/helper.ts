@@ -1,3 +1,5 @@
+import React from 'react';
+
 export const range= (begin: number, end: number): Array<number> => {
     let len = end - begin + 1;
     let arr = new Array(len);

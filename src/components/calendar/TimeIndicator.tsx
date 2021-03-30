@@ -10,7 +10,7 @@ interface Props {
 
 const TimeIndicator = (props: Props) => {
     const { startTime, endTime } = props
-    const [y, setY] = useState<number>()
+    const [y, setY] = useState<number>(-1)
     const [date, setDate] = useState<Date>(new Date())
 
     useEffect(() => {
@@ -24,9 +24,13 @@ const TimeIndicator = (props: Props) => {
             const startDate = startTime
     
             // originally if 10:30 has passed, yields 10.5
-            // need to multiply by 2 since rowHeight => 30 mins
-            const elapsed = (curTime - startDate) * 2
-            setY(elapsed * moveStep)
+            const elapsed = (curTime - startDate)
+            if (startTime + elapsed <= endTime) {
+                // need to multiply by 2 since rowHeight => 30 mins
+                setY(elapsed * moveStep * 2)
+            } else {
+                setY(-1)
+            }
         }
     }, [date])
     
