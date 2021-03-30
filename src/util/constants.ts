@@ -1,5 +1,5 @@
-export const startTime = 8
-export const endTime = 23
+export const DEFAULT_START_TIME = 8
+export const DEFAULT_END_TIME = 23
 
 export const moveStep = 25
 export const rowHeight = 20

@@ -2,13 +2,14 @@ import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { range, convert24HTo12H, generateKey } from '../../util/helper'
 import { EventData } from '../../util/types'
-import { startTime, endTime } from '../../util/constants'
 import { v4 as uuid4 } from 'uuid';
 import Event from './Event'
 import TimeIndicator from './TimeIndicator'
 
 interface Props {
     curDay: Date
+    startTime: number
+    endTime: number
 }
 
 const BG = styled.div`
@@ -21,7 +22,7 @@ const Row = styled.div`
 `
 
 const Calendar: React.FC<Props> = (props: Props) => {
-    const { curDay } = props
+    const { curDay, startTime, endTime } = props
     
     const hours = range(startTime, endTime)
     const [events, setEvents] = useState<EventData[]>([])
@@ -90,7 +91,7 @@ const Calendar: React.FC<Props> = (props: Props) => {
                     }}
                 />
             )}
-            <TimeIndicator />
+            <TimeIndicator startTime={startTime} endTime={endTime} />
         </div>
     )
 }

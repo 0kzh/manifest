@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
-import { startTime, moveStep } from '../../util/constants'
+import { moveStep } from '../../util/constants'
 import { dateToNumber } from '../../util/helper'
 
-interface Props {}
+interface Props {
+    startTime: number
+    endTime: number
+}
 
 const TimeIndicator = (props: Props) => {
-    const {} = props
+    const { startTime, endTime } = props
     const [y, setY] = useState<number>()
     const [date, setDate] = useState<Date>(new Date())
 
