@@ -55,15 +55,18 @@ const Event: React.FC<Props> = (props: Props) => {
 
     useEffect(() => {
         if (!event.text) {
+            setFocused(true)
             focusInput()
         }
     }, [])
 
     const focusInput = () => {
-        if (inputRef && inputRef.current) {
-            inputRef.current.focus()
-            inputRef.current.select()
-        }
+        setTimeout(() => {
+            if (inputRef && inputRef.current) {
+                inputRef.current.focus()
+                inputRef.current.select()
+            }
+        })
     }
 
     const menuItems: ContextMenuItem[] = [
