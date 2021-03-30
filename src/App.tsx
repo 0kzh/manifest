@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import Calendar from "./components/calendar/Calendar";
 import DatePicker from "react-datepicker";
-import { range, convert24HTo12H, formatDate } from "./util/helper";
+import { range, convert24HTo12H, formatDate, useKeyPress } from "./util/helper";
 import { DEFAULT_START_TIME, DEFAULT_END_TIME } from "./util/constants";
 import { DocumentTextOutline, ChevronLeftOutline, ChevronRightOutline, Cog }from "heroicons-react";
 import './App.css';
@@ -12,6 +12,9 @@ function App() {
   const [startTime, setStartTime] = useState<number>(DEFAULT_START_TIME);
   const [endTime, setEndTime] = useState<number>(DEFAULT_END_TIME);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+
+  const leftPress = useKeyPress("ArrowLeft");
+  const rightPress = useKeyPress("ArrowRight");
 
   const settingsRef = useRef<HTMLDivElement>(null);
   const settingsBtnRef = useRef<HTMLDivElement>(null);
@@ -61,6 +64,19 @@ function App() {
           document.removeEventListener("mousedown", handleClickOutside);
       };
   }, [settingsRef, settingsBtnRef]);
+
+  // use arrow keys to skip days
+  useEffect(() => {
+    if (leftPress) {
+      prevDay()
+    }
+  }, [leftPress])
+
+  useEffect(() => {
+    if (rightPress) {
+      nextDay()
+    }
+  }, [rightPress])
 
   interface IPropInput {
     onClick: (date: any) => void;
