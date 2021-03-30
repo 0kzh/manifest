@@ -76,7 +76,7 @@ const Calendar: React.FC<Props> = (props: Props) => {
                     </Row>
                 )}
             </BG>
-            {events && events.filter(event => event.start >= startTime && event.end <= endTime).map((event, i) =>
+            {events && events.filter(event => event.start >= startTime && event.end <= endTime + 1).map((event, i) =>
                 <Event 
                     key={`event_${event.id}_${startTime}_${endTime}`} 
                     event={event}

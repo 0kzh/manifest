@@ -25,7 +25,7 @@ const TimeIndicator = (props: Props) => {
     
             // originally if 10:30 has passed, yields 10.5
             const elapsed = (curTime - startDate)
-            if (startTime + elapsed <= endTime) {
+            if (startTime + elapsed <= endTime + 1) {
                 // need to multiply by 2 since rowHeight => 30 mins
                 setY(elapsed * moveStep * 2)
             } else {
