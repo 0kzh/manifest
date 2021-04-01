@@ -10,6 +10,15 @@
   src: local('mono'), url(./assets/fonts/JetBrainsMono-Bold.woff2) format('woff2');
 }
 
+html, body, #root {
+  height: 100%;
+}
+
+#root {
+  display: flex;
+  align-items: center;
+}
+
 body {
   margin: 0;
   font-size: 12px;
@@ -17,7 +26,6 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
-
 
 .react-datepicker {
   font-family: mono, monospace !important;
