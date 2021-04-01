@@ -10,10 +10,6 @@
   src: local('mono'), url(./assets/fonts/JetBrainsMono-Bold.woff2) format('woff2');
 }
 
-html, body, #root {
-  height: 100%;
-}
-
 #root {
   display: flex;
   align-items: center;
