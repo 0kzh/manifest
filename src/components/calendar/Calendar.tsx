@@ -1,3 +1,5 @@
+/* global chrome */
+
 import React, { useState, useEffect } from 'react'
 import styled from 'styled-components'
 import { range, convert24HTo12H, generateKey } from '../../util/helper'

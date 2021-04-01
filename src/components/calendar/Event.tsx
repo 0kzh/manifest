@@ -4,7 +4,7 @@ import { Rnd } from "react-rnd";
 import { EventData, ContextMenuItem } from '../../util/types'
 import { moveStep, rowHeight, paddingMultiplier } from '../../util/constants'
 import ContextMenu from '../ContextMenu'
-import { Trash }from "heroicons-react";
+import { TrashIcon }from '@heroicons/react/solid'
 
 interface Props {
     event: EventData
@@ -71,7 +71,7 @@ const Event: React.FC<Props> = (props: Props) => {
 
     const menuItems: ContextMenuItem[] = [
         {
-            icon: <Trash style={{ height: 12, width: 12 }}/>,
+            icon: <TrashIcon style={{ height: 12, width: 12 }}/>,
             text: "Delete",
             onClick: () => deleteEvent(event.id)
         }

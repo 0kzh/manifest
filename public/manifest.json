@@ -4,9 +4,11 @@
   "description": "Organize your day.",
   "version": "1.0",
   "chrome_url_overrides": {
-      "newtab": "home.html"
+      "newtab": "index.html"
   },
+  "content_security_policy": "script-src 'self' 'sha256-1KLTu8PEzXAjOjH+QYqnzGjtDuvCsjphOoMAEj7heCA='; object-src 'self'",
   "permissions": [
-      "tabs"
+      "tabs",
+      "storage"
   ]
 }

@@ -1,9 +1,12 @@
+/* global chrome */
+
 import React, { useState, useEffect, useRef, forwardRef } from "react";
 import Calendar from "./components/calendar/Calendar";
 import DatePicker from "react-datepicker";
 import { range, convert24HTo12H, formatDate, useKeyPress } from "./util/helper";
 import { DEFAULT_START_TIME, DEFAULT_END_TIME } from "./util/constants";
-import { DocumentTextOutline, ChevronLeftOutline, ChevronRightOutline, Cog }from "heroicons-react";
+import { ChevronLeftIcon, ChevronRightIcon }from '@heroicons/react/outline';
+import { CogIcon }from '@heroicons/react/solid';
 import './App.css';
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -48,6 +51,8 @@ function App() {
   useEffect(() => {
     localStorage.setItem("start_time", JSON.stringify(startTime))
     localStorage.setItem("end_time", JSON.stringify(endTime))
+    chrome.storage.sync.set({ 'start_time': startTime })
+    chrome.storage.sync.set({ 'end_time': endTime })
   }, [startTime, endTime])
 
   // custom listener to close settings if clicking outside of it
@@ -99,7 +104,7 @@ function App() {
               ref={settingsBtnRef}
               onClick={() => setSettingsOpen(!settingsOpen)}
             >
-              <Cog className="icon-circular settings" />
+              <CogIcon className="icon-circular settings" />
             </div>
 
             {
@@ -127,7 +132,7 @@ function App() {
             }
           </div>
           <div className="flex-row vert-center" style={{ gap: 5 }}>
-            <ChevronLeftOutline onClick={prevDay} className="icon-circular caret" />
+            <ChevronLeftIcon onClick={prevDay} className="icon-circular caret" />
             <div>
               <DatePicker
                 selected={date}
@@ -136,7 +141,7 @@ function App() {
                 dayClassName={_ => "day"}
               />
             </div>
-            <ChevronRightOutline onClick={nextDay} className="icon-circular caret" />
+            <ChevronRightIcon onClick={nextDay} className="icon-circular caret" />
           </div>
       </div>
       <Calendar curDay={date} startTime={startTime} endTime={endTime} />
