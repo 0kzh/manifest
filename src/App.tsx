@@ -36,21 +36,21 @@ function App() {
 
   // on initial load, load saved start/end time
   useEffect(() => {
-    const savedStartTime: string | null = localStorage.getItem('start_time')
-    const savedEndTime: string | null = localStorage.getItem('end_time')
-    if (savedStartTime) {
-      setStartTime(JSON.parse(savedStartTime))
-    }
+    chrome.storage.sync.get(['start_time'], function(res) {
+      if (res.start_time) {
+        setStartTime(res.start_time)
+      }
+    });
 
-    if (savedEndTime) {
-      setEndTime(JSON.parse(savedEndTime))
-    }
+    chrome.storage.sync.get(['end_time'], function(res) {
+      if (res.end_time) {
+        setEndTime(res.end_time)
+      }
+    });
   }, [])
 
   // save start/end time on value change
   useEffect(() => {
-    localStorage.setItem("start_time", JSON.stringify(startTime))
-    localStorage.setItem("end_time", JSON.stringify(endTime))
     chrome.storage.sync.set({ 'start_time': startTime })
     chrome.storage.sync.set({ 'end_time': endTime })
   }, [startTime, endTime])

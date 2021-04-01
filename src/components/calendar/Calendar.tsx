@@ -29,20 +29,20 @@ const Calendar: React.FC<Props> = (props: Props) => {
     const hours = range(startTime, endTime)
     const [events, setEvents] = useState<EventData[]>([])
 
-    // on initial load, get events from localStorage
+    // on initial load, get events from Chrome storage
     useEffect(() => {
         let loadedEvents: EventData[] = []
-        const persistedEvents: string | null = localStorage.getItem(generateKey(curDay))
-        if (persistedEvents) {
-            loadedEvents = JSON.parse(persistedEvents)
-        }
 
-        setEvents(loadedEvents)
+        const key = generateKey(curDay)
+        chrome.storage.sync.get([key], function(result) {
+            loadedEvents = result[key]
+            setEvents(loadedEvents)
+        });
     }, [curDay])
 
-    // on change of events, persist to localStorage    
+    // on change of events, persist to Chrome storage    
     useEffect(() => {
-        localStorage.setItem(generateKey(curDay), JSON.stringify(events))
+        chrome.storage.sync.set({ [generateKey(curDay)]: events });
     }, [events])
 
     const addEvent = (startHour: number, isHalfHour: boolean) => {
