@@ -1,6 +1,6 @@
 {
   "manifest_version": 2,
-  "name": "Daily Manifest",
+  "name": "Manifest",
   "description": "Organize your day.",
   "version": "1.0",
   "chrome_url_overrides": {

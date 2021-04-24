@@ -99,7 +99,7 @@ function App() {
     <div className="container">
       <div className="header">
           <div className="flex-row vert-center">
-            <b>Daily Manifest</b>
+            <b>Manifest</b>
             <div
               ref={settingsBtnRef}
               onClick={() => setSettingsOpen(!settingsOpen)}
