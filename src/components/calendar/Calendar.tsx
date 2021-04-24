@@ -36,7 +36,9 @@ const Calendar: React.FC<Props> = (props: Props) => {
         const key = generateKey(curDay)
         chrome.storage.sync.get([key], function(result) {
             loadedEvents = result[key]
-            setEvents(loadedEvents)
+            if (loadedEvents) {
+                setEvents(loadedEvents)
+            }
         });
     }, [curDay])
 
@@ -56,6 +58,8 @@ const Calendar: React.FC<Props> = (props: Props) => {
 
         if (events) {
             setEvents([...events, newEvent])
+        } else {
+            setEvents([newEvent])
         }
     }
 
