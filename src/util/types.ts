@@ -5,6 +5,7 @@ export type EventData = {
     start: number
     end: number
     text: string
+    focused?: boolean
 }
 
 export type ContextMenuItem = {

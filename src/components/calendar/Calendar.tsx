@@ -12,6 +12,7 @@ interface Props {
     curDay: Date
     startTime: number
     endTime: number
+    setInputFocusedHandler: (focused: boolean) => void
 }
 
 const BG = styled.div`
@@ -24,7 +25,7 @@ const Row = styled.div`
 `
 
 const Calendar: React.FC<Props> = (props: Props) => {
-    const { curDay, startTime, endTime } = props
+    const { curDay, startTime, endTime, setInputFocusedHandler } = props
     
     const hours = range(startTime, endTime)
     const [events, setEvents] = useState<EventData[]>([])
@@ -45,7 +46,8 @@ const Calendar: React.FC<Props> = (props: Props) => {
     // on change of events, persist to Chrome storage    
     useEffect(() => {
         chrome.storage.sync.set({ [generateKey(curDay)]: events });
-    }, [events])
+        setInputFocusedHandler(events.some((e: EventData) => e.focused));
+    }, [events, curDay, setInputFocusedHandler])
 
     const addEvent = (startHour: number, isHalfHour: boolean) => {
         const startTime = startHour + (isHalfHour ? 0.5 : 0.0)
@@ -53,7 +55,7 @@ const Calendar: React.FC<Props> = (props: Props) => {
             id: uuid4(),
             start: startTime,
             end: startTime + 0.5,
-            text: ''
+            text: '',
         }
 
         if (events) {

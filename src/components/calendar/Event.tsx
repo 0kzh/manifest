@@ -46,18 +46,26 @@ const Input = styled.input`
 const Event: React.FC<Props> = (props: Props) => {
     const { event, baseTime, updateEvent, deleteEvent } = props
 
-    const [focused, setFocused] = useState<boolean>(false);
+    // const [focused, setFocused] = useState<boolean>(false);
     const [isDragAndDrop, setIsDragAndDrop] = useState<boolean>(false);
     const [resizable, setResizable] = useState<boolean>(false);
 
     const inputRef = useRef<HTMLInputElement>(null);
     const containerRef = useRef<HTMLDivElement>(null);
 
+    const setFocused = (focused: boolean) => {
+        const newEvent = event
+        newEvent.focused = focused
+        updateEvent(newEvent) 
+    }
+
     useEffect(() => {
         if (!event.text) {
             setFocused(true)
             focusInput()
         }
+
+        return setFocused(false)
     }, [])
 
     const focusInput = () => {
@@ -141,14 +149,14 @@ const Event: React.FC<Props> = (props: Props) => {
                         ref={inputRef}
                         type="text"
                         spellCheck={false}
-                        disabled={!focused}
+                        disabled={!event.focused}
                         value={event.text}
                         onChange={(e) => {
                             const newEvent = event
                             newEvent.text = e.target.value
                             updateEvent(newEvent)
                         }}
-                        onMouseUp={(e) => e.button === 0 && (focused ? e.stopPropagation() : () => {})}
+                        onMouseUp={(e) => e.button === 0 && (event.focused ? e.stopPropagation() : () => {})}
                     />    
                 </Entry> 
             </div>

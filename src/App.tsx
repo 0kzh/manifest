@@ -15,6 +15,7 @@ function App() {
   const [startTime, setStartTime] = useState<number>(DEFAULT_START_TIME);
   const [endTime, setEndTime] = useState<number>(DEFAULT_END_TIME);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [inputFocused, setInputFocused] = useState<boolean>(false);
 
   const leftPress = useKeyPress("ArrowLeft");
   const rightPress = useKeyPress("ArrowRight");
@@ -72,16 +73,16 @@ function App() {
 
   // use arrow keys to skip days
   useEffect(() => {
-    if (leftPress) {
+    if (leftPress && !inputFocused) {
       prevDay()
     }
-  }, [leftPress])
+  }, [leftPress, inputFocused])
 
   useEffect(() => {
-    if (rightPress) {
+    if (rightPress && !inputFocused) {
       nextDay()
     }
-  }, [rightPress])
+  }, [rightPress, inputFocused])
 
   interface IPropInput {
     onClick: (date: any) => void;
@@ -144,7 +145,7 @@ function App() {
             <ChevronRightIcon onClick={nextDay} className="icon-circular caret" />
           </div>
       </div>
-      <Calendar curDay={date} startTime={startTime} endTime={endTime} />
+      <Calendar curDay={date} startTime={startTime} endTime={endTime} setInputFocusedHandler={setInputFocused} />
     </div>
   );
 }
