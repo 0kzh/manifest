@@ -125,7 +125,7 @@ function App() {
                   onChange={(e: React.ChangeEvent<HTMLSelectElement>) => setEndTime(parseInt(e.target.value))}
                   defaultValue={endTime}
                 >
-                  {range(startTime + 1, 23).map(hour => 
+                  {range(startTime + 1, 23 + startTime).map(hour => 
                     <option key={`end_opt_${hour}`} value={hour}>{convert24HTo12H(hour)}</option>
                   )}
                 </select>
