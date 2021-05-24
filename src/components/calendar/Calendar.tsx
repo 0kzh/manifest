@@ -37,16 +37,14 @@ const Calendar: React.FC<Props> = (props: Props) => {
         const key = generateKey(curDay)
         chrome.storage.sync.get([key], function(result) {
             loadedEvents = result[key]
-            if (loadedEvents) {
-                setEvents(loadedEvents)
-            }
+            setEvents(loadedEvents)
         });
     }, [curDay])
 
     // on change of events, persist to Chrome storage    
     useEffect(() => {
         chrome.storage.sync.set({ [generateKey(curDay)]: events });
-        setInputFocusedHandler(events.some((e: EventData) => e.focused));
+        setInputFocusedHandler(events && events.some((e: EventData) => e.focused));
     }, [events, curDay, setInputFocusedHandler])
 
     const addEvent = (startHour: number, isHalfHour: boolean) => {
