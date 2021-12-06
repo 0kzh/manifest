@@ -1,3 +1,36 @@
+* {
+  box-sizing: inherit;
+}
+
+@font-face {
+  font-family: 'mono';
+  font-weight: normal;
+  src: local('mono'), url(./assets/fonts/JetBrainsMono-Regular.woff2) format('woff2');
+}
+
+@font-face {
+  font-family: 'mono';
+  font-weight: 700;
+  src: local('mono'), url(./assets/fonts/JetBrainsMono-Bold.woff2) format('woff2');
+}
+
+#root {
+  display: flex;
+  align-items: center;
+}
+
+body {
+  margin: 0;
+  font-size: 12px;
+  font-family: mono, monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.react-datepicker {
+  font-family: mono, monospace !important;
+}
+
 .container {
   margin: 0 auto;
   padding: 64px 16px 32px 16px;
@@ -14,6 +47,7 @@
 
 .calendar {
   position: relative;
+  width: 100%;
 }
 
 .hour-box {
@@ -131,4 +165,26 @@
   margin-top: 4.5em;
   margin-left: -1px;
   z-index: 9999;
+}
+
+.todo {
+  display: flex;
+  align-items: center;
+  height: 49px;
+  border-bottom: 1px solid #7a7a7a;
+  border-top: 1px solid #7a7a7a;
+}
+
+.todo input[type="text"], .todo input[type="text"]:focus {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  font-size: 12px;
+  padding: 0;
+  font-family: 'mono', monospace !important;
+  margin-left: 0.5em;
+}
+
+.todo input[type="checkbox"] {
+  box-shadow: none !important;
 }

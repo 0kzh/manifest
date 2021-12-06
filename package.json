@@ -3,7 +3,9 @@
   "version": "1.1.0",
   "private": true,
   "dependencies": {
-    "@heroicons/react": "^1.0.0",
+    "@headlessui/react": "^1.4.2",
+    "@heroicons/react": "^1.0.5",
+    "@tailwindcss/forms": "^0.3.4",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -21,13 +23,15 @@
     "react-rnd": "^10.2.4",
     "react-scripts": "4.0.2",
     "styled-components": "^5.2.1",
+    "tailwindcss": "^2.2.19",
     "typescript": "^4.1.2",
     "uuid": "^8.3.2",
     "watch": "^1.0.2",
     "web-vitals": "^1.0.1"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "npm run tailwind:css && react-scripts start",
+    "tailwind:css": "tailwind build src/tailwind.css -c  tailwind.config.js -o src/index.css",
     "build": "INLINE_RUNTIME_CHUNK=false react-scripts build",
     "watch": "watch 'npm run build' ./src",
     "test": "react-scripts test",
