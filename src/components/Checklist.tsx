@@ -1,7 +1,7 @@
 import { PlusCircleIcon } from "@heroicons/react/solid";
 import React from "react";
 
-type TChecklistItem = {
+export type TChecklistItem = {
   value: string;
   checked: boolean;
 };

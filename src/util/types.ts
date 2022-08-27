@@ -1,8 +1,11 @@
 import React from "react"
+import { TChecklistItem } from "../components/Checklist";
 
-// calendar data as map of dates to events
-export type CalendarData = {
-    [date: string]: EventData[];
+export type PersistedData = {
+    [date: string]: {
+        events: EventData[],
+        todos: TChecklistItem[],
+    };
 }
 
 export type EventData = {

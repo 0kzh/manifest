@@ -27,11 +27,10 @@ const habits = [
 ];
 
 function App() {
-  const { date, setDate } = useApp();
+  const { date, setDate, inputFocused } = useApp();
   const [startTime, setStartTime] = useState<number>(DEFAULT_START_TIME);
   const [endTime, setEndTime] = useState<number>(DEFAULT_END_TIME);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
-  const [inputFocused, setInputFocused] = useState<boolean>(false);
 
   const leftPress = useKeyPress("ArrowLeft");
   const rightPress = useKeyPress("ArrowRight");
@@ -180,7 +179,6 @@ function App() {
         <Calendar
           startTime={startTime}
           endTime={endTime}
-          setInputFocusedHandler={setInputFocused}
         />
         <div className="flex flex-col" style={{ gap: 50, marginTop: -1 }}>
           <Checklist name="TODO" items={habits} addItemText="Add TODO" />
