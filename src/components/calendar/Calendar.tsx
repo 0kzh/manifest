@@ -9,10 +9,11 @@ import {
   getKey,
   setKey,
 } from "../../util/helper";
-import { EventData } from "../../util/types";
+import { CalendarData, EventData } from "../../util/types";
 import { v4 as uuid4 } from "uuid";
 import Event from "./Event";
 import TimeIndicator from "./TimeIndicator";
+import { getAllJSDocTags } from "typescript";
 
 interface Props {
   curDay: Date;
@@ -34,28 +35,28 @@ const Calendar: React.FC<Props> = (props: Props) => {
   const { curDay, startTime, endTime, setInputFocusedHandler } = props;
 
   const hours = range(startTime, endTime);
-  const [events, setEvents] = useState<EventData[]>([]);
+  const [data, setData] = useState<CalendarData>({});
 
   // on initial load, get events from Chrome storage
   useEffect(() => {
-    let loadedEvents: EventData[] = [];
-
     const key = generateKey(curDay);
-    getKey(key, (result) => {
-      if (result) {
-        loadedEvents = result[key];
-        if (loadedEvents) {
-          setEvents(loadedEvents);
+    if (!(key in data)) {
+      getKey(key, (val) => {
+        if (val) {
+          setData({ ...data, [key]: val });
         }
-      }
-    });
-  }, [curDay]);
+      });
+    }
+  }, [curDay, data]);
 
   // on change of events, persist to Chrome storage
   useEffect(() => {
-    setKey(generateKey(curDay), events);
-    setInputFocusedHandler(events.some((e: EventData) => e.focused));
-  }, [events, curDay, setInputFocusedHandler]);
+    const key = generateKey(curDay);
+    if (data[key]) {
+      setKey(key, data[key]);
+      setInputFocusedHandler(data[key]?.some((e) => e.focused));
+    }
+  }, [data, curDay, setInputFocusedHandler])
 
   const addEvent = (startHour: number, isHalfHour: boolean) => {
     const startTime = startHour + (isHalfHour ? 0.5 : 0.0);
@@ -66,12 +67,11 @@ const Calendar: React.FC<Props> = (props: Props) => {
       text: "",
     };
 
-    if (events) {
-      setEvents([...events, newEvent]);
-    } else {
-      setEvents([newEvent]);
-    }
+    const key = generateKey(curDay);
+    setData({ ...data, [key]: [...(data[key] || []), newEvent] });
   };
+
+  const events: EventData[] = (data && data[generateKey(curDay)]) || [];
 
   return (
     <div className="calendar">
@@ -109,14 +109,21 @@ const Calendar: React.FC<Props> = (props: Props) => {
               event={event}
               baseTime={startTime}
               updateEvent={(newEvent: EventData) => {
-                const newEvents = events.map((e) =>
-                  e.id === event.id ? newEvent : e
-                );
-                setEvents(newEvents);
+                const key = generateKey(curDay);
+                setData({
+                  ...data,
+                  [key]: data[key]?.map((e) =>
+                    e.id === event.id ? newEvent : e
+                  ),
+                });
               }}
               deleteEvent={(id: string) => {
-                const newEvents = events.filter((e) => e.id !== id);
-                setEvents(newEvents);
+                console.log("triggered")
+                const key = generateKey(curDay);
+                setData({
+                  ...data,
+                  [key]: data[key]?.filter((e) => e.id !== id),
+                });
               }}
             />
           ))}

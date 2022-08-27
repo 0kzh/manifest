@@ -72,7 +72,7 @@ export const useKeyPress = function (targetKey: string) {
 
 export const getKey = (key: string, fn: (val: any) => void): any => {
   if (!isExtensionMode) {
-    const res = JSON.parse(localStorage.getItem(key) || "{}");
+    const res = JSON.parse(localStorage.getItem(key) || "[]");
     fn(res);
   } else {
     chrome.storage.sync.get([key], fn);

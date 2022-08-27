@@ -43,7 +43,7 @@ const TimeIndicator = (props: Props) => {
     } as const
 
     return (
-        <div className="hour-box" style={style}>
+        <div className="hour-box pointer-events-none" style={style}>
             <div />
             <div>
                 <Circle />

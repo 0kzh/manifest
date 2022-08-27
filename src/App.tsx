@@ -182,7 +182,10 @@ function App() {
           endTime={endTime}
           setInputFocusedHandler={setInputFocused}
         />
-        <Checklist name="Good Habits" items={habits} />
+        <div className="flex flex-col" style={{ gap: 50, marginTop: -1 }}>
+          <Checklist name="TODO" items={habits} addItemText="Add TODO" />
+          <Checklist name="Habits" items={habits} addItemText="Add Habit" />
+        </div>
       </div>
     </div>
   );
