@@ -180,7 +180,8 @@ body {
   outline: none !important;
   box-shadow: none !important;
   font-size: 12px;
-  padding: 0;
+  padding-top: 0;
+  padding-bottom: 0;
   font-family: 'mono', monospace !important;
   margin-left: 0.5em;
 }

@@ -19,13 +19,6 @@ import "react-datepicker/dist/react-datepicker.css";
 import Checklist from "./components/Checklist";
 import { useApp } from "./contexts/AppContext";
 
-const habits = [
-  {
-    value: "Eat",
-    checked: false,
-  },
-];
-
 function App() {
   const { date, setDate, inputFocused } = useApp();
   const [startTime, setStartTime] = useState<number>(DEFAULT_START_TIME);
@@ -181,8 +174,8 @@ function App() {
           endTime={endTime}
         />
         <div className="flex flex-col" style={{ gap: 50, marginTop: -1 }}>
-          <Checklist name="TODO" items={habits} addItemText="Add TODO" />
-          <Checklist name="Habits" items={habits} addItemText="Add Habit" />
+          <Checklist name="TODO" addItemText="Add TODO" />
+          <Checklist name="Habits" addItemText="Add Habit" />
         </div>
       </div>
     </div>

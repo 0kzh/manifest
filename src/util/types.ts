@@ -1,11 +1,7 @@
 import React from "react"
-import { TChecklistItem } from "../components/Checklist";
 
 export type PersistedData = {
-    [date: string]: {
-        events: EventData[],
-        todos: TChecklistItem[],
-    };
+    [date: string]: any;
 }
 
 export type EventData = {

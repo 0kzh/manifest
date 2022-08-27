@@ -38,8 +38,12 @@ export const formatDate = (date: Date): string => {
 export const generateKey = (date: Date): string => {
   const serializedISODate =
     date.getFullYear() + "-" + (date.getMonth() + 1) + "-" + date.getDate();
-  return `events-${serializedISODate}`;
+  return serializedISODate;
 };
+
+export const toSnakeCase = (str: string): string => {
+  return str.toLowerCase().split(" ").join("_");
+}
 
 // custom hook for detecting key presses
 export const useKeyPress = function (targetKey: string) {

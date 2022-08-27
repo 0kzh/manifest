@@ -1,6 +1,6 @@
 import React, { useState, useContext, createContext, useEffect } from "react";
 import { generateKey, getKey, setKey } from "../util/helper";
-import { PersistedData } from "../util/types";
+import { EventData, PersistedData } from "../util/types";
 
 export type TAppContextValue = {
   date: Date;
@@ -32,7 +32,7 @@ const useAppData = (): TAppContextValue => {
     const key = generateKey(date);
     if (data[key]) {
       setKey(key, data[key]);
-      setInputFocused(data[key].events?.some((e) => e.focused));
+      setInputFocused(data[key].events?.some((e: EventData) => e.focused));
     }
   }, [data, date])
 
