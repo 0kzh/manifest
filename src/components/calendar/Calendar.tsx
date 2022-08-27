@@ -14,9 +14,9 @@ import { v4 as uuid4 } from "uuid";
 import Event from "./Event";
 import TimeIndicator from "./TimeIndicator";
 import { getAllJSDocTags } from "typescript";
+import { useApp } from "../../contexts/AppContext";
 
 interface Props {
-  curDay: Date;
   startTime: number;
   endTime: number;
   setInputFocusedHandler: (focused: boolean) => void;
@@ -32,14 +32,15 @@ const Row = styled.div`
 `;
 
 const Calendar: React.FC<Props> = (props: Props) => {
-  const { curDay, startTime, endTime, setInputFocusedHandler } = props;
+  const { startTime, endTime, setInputFocusedHandler } = props;
+  const { date } = useApp();
 
   const hours = range(startTime, endTime);
   const [data, setData] = useState<CalendarData>({});
 
   // on initial load, get events from Chrome storage
   useEffect(() => {
-    const key = generateKey(curDay);
+    const key = generateKey(date);
     if (!(key in data)) {
       getKey(key, (val) => {
         if (val) {
@@ -47,16 +48,16 @@ const Calendar: React.FC<Props> = (props: Props) => {
         }
       });
     }
-  }, [curDay, data]);
+  }, [date, data]);
 
   // on change of events, persist to Chrome storage
   useEffect(() => {
-    const key = generateKey(curDay);
+    const key = generateKey(date);
     if (data[key]) {
       setKey(key, data[key]);
       setInputFocusedHandler(data[key]?.some((e) => e.focused));
     }
-  }, [data, curDay, setInputFocusedHandler])
+  }, [data, date, setInputFocusedHandler])
 
   const addEvent = (startHour: number, isHalfHour: boolean) => {
     const startTime = startHour + (isHalfHour ? 0.5 : 0.0);
@@ -67,11 +68,11 @@ const Calendar: React.FC<Props> = (props: Props) => {
       text: "",
     };
 
-    const key = generateKey(curDay);
+    const key = generateKey(date);
     setData({ ...data, [key]: [...(data[key] || []), newEvent] });
   };
 
-  const events: EventData[] = (data && data[generateKey(curDay)]) || [];
+  const events: EventData[] = (data && data[generateKey(date)]) || [];
 
   return (
     <div className="calendar">
@@ -109,7 +110,7 @@ const Calendar: React.FC<Props> = (props: Props) => {
               event={event}
               baseTime={startTime}
               updateEvent={(newEvent: EventData) => {
-                const key = generateKey(curDay);
+                const key = generateKey(date);
                 setData({
                   ...data,
                   [key]: data[key]?.map((e) =>
@@ -119,7 +120,7 @@ const Calendar: React.FC<Props> = (props: Props) => {
               }}
               deleteEvent={(id: string) => {
                 console.log("triggered")
-                const key = generateKey(curDay);
+                const key = generateKey(date);
                 setData({
                   ...data,
                   [key]: data[key]?.filter((e) => e.id !== id),

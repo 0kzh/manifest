@@ -17,6 +17,7 @@ import { CogIcon } from "@heroicons/react/solid";
 import "./App.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Checklist from "./components/Checklist";
+import { useApp } from "./contexts/AppContext";
 
 const habits = [
   {
@@ -26,7 +27,7 @@ const habits = [
 ];
 
 function App() {
-  const [date, setDate] = useState<Date>(new Date());
+  const { date, setDate } = useApp();
   const [startTime, setStartTime] = useState<number>(DEFAULT_START_TIME);
   const [endTime, setEndTime] = useState<number>(DEFAULT_END_TIME);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
@@ -177,7 +178,6 @@ function App() {
       </div>
       <div className="flex w-full gap-4">
         <Calendar
-          curDay={date}
           startTime={startTime}
           endTime={endTime}
           setInputFocusedHandler={setInputFocused}
