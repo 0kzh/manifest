@@ -2,6 +2,17 @@ import React, { useState } from "react";
 
 const isExtensionMode = typeof chrome != "undefined" && chrome?.storage;
 
+if (isExtensionMode) {
+  document.title = "New Tab";
+} else {
+  // set title formatted with short month
+  document.title = new Date().toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+  });
+}
+
 export const range = (begin: number, end: number): Array<number> => {
   let len = end - begin + 1;
   let arr = new Array(len);

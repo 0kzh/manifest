@@ -30,6 +30,7 @@ function App() {
 
   const leftPress = useKeyPress("ArrowLeft");
   const rightPress = useKeyPress("ArrowRight");
+  const inputFocusedRef = useRef<boolean>(false);
 
   const settingsRef = useRef<HTMLDivElement>(null);
   const settingsBtnRef = useRef<HTMLDivElement>(null);
@@ -86,18 +87,22 @@ function App() {
     };
   }, [settingsRef, settingsBtnRef]);
 
-  // use arrow keys to skip days
   useEffect(() => {
-    if (leftPress && !inputFocused) {
-      prevDay();
-    }
-  }, [leftPress, inputFocused]);
+    inputFocusedRef.current = inputFocused
+  }, [inputFocused]);
 
   useEffect(() => {
-    if (rightPress && !inputFocused) {
+    if (leftPress && !inputFocusedRef.current) {
+      prevDay();
+    }
+  }, [leftPress]);
+
+  useEffect(() => {
+    if (rightPress && !inputFocusedRef.current) {
+      console.log("nextDay")
       nextDay();
     }
-  }, [rightPress, inputFocused]);
+  }, [rightPress]);
 
   interface IPropInput {
     onClick: (date: any) => void;
