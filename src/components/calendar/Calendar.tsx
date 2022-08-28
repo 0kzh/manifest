@@ -15,6 +15,7 @@ import Event from "./Event";
 import TimeIndicator from "./TimeIndicator";
 import { getAllJSDocTags } from "typescript";
 import { useApp } from "../../contexts/AppContext";
+import { ArrowUturnLeftIcon } from "@heroicons/react/24/outline";
 
 interface Props {
   startTime: number;
@@ -53,6 +54,19 @@ const Calendar: React.FC<Props> = (props: Props) => {
   };
 
   const events: EventData[] = (data && data[generateKey(date)]?.events) || [];
+  const yesterday = new Date(date);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayKey = generateKey(yesterday);
+  const yesterdaysEvents = data[yesterdayKey]?.events || [];
+
+  const fillFromYesterday = () => {
+    const newEvents = yesterdaysEvents.map((event: EventData) => ({
+      ...event,
+      id: uuid4(),
+    }));
+    const newData = { ...data, [generateKey(date)]: { ...data[generateKey(date)], events: newEvents } };
+    setData(newData);
+  }
 
   return (
     <div className="calendar">
@@ -115,6 +129,14 @@ const Calendar: React.FC<Props> = (props: Props) => {
             />
           ))}
       <TimeIndicator startTime={startTime} endTime={endTime} />
+      {events.length === 0 && <button
+        className="flex items-center justify-center gap-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-500 w-full mt-2 py-2"
+        onClick={fillFromYesterday}
+      >
+        <ArrowUturnLeftIcon className="h-3 w-3" />
+        Fill from yesterday
+      </button>
+    }
     </div>
   );
 };
