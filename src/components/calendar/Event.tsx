@@ -4,7 +4,7 @@ import { Rnd } from "react-rnd";
 import { EventData, ContextMenuItem } from "../../util/types";
 import { moveStep, rowHeight, paddingMultiplier } from "../../util/constants";
 import ContextMenu from "../ContextMenu";
-import { TrashIcon } from "@heroicons/react/solid";
+import { TrashIcon } from "@heroicons/react/24/solid";
 
 interface Props {
   event: EventData;

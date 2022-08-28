@@ -12,8 +12,8 @@ import {
   setKey,
 } from "./util/helper";
 import { DEFAULT_START_TIME, DEFAULT_END_TIME } from "./util/constants";
-import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/outline";
-import { CogIcon } from "@heroicons/react/solid";
+import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
+import { CogIcon } from "@heroicons/react/24/solid";
 import "./App.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Checklist from "./components/Checklist";
@@ -173,7 +173,7 @@ function App() {
           startTime={startTime}
           endTime={endTime}
         />
-        <div className="flex flex-col" style={{ gap: 50, marginTop: -1 }}>
+        <div className="flex flex-col" style={{ gap: 48, marginTop: -1 }}>
           <Checklist name="TODO" addItemText="Add TODO" />
           <Checklist name="Habits" addItemText="Add Habit" />
         </div>

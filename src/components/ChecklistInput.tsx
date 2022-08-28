@@ -1,4 +1,4 @@
-import { TrashIcon } from "@heroicons/react/outline";
+import { TrashIcon } from "@heroicons/react/24/outline";
 import React, { useRef } from "react";
 import styled from "styled-components";
 import { ContextMenuItem } from "../util/types";
@@ -46,6 +46,7 @@ const ChecklistInput: React.FC<Props> = ({ item, onCheck, onChange, onDelete }) 
 };
 
 const Input = styled.input`
+  padding-left: 0.5em;
   border-radius: 4px;
   box-sizing: border-box;
 

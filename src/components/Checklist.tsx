@@ -1,4 +1,4 @@
-import { PlusCircleIcon } from "@heroicons/react/solid";
+import { ArrowUturnLeftIcon, PlusCircleIcon } from "@heroicons/react/24/solid";
 import React, { useRef } from "react";
 import { useApp } from "../contexts/AppContext";
 import { generateKey, toSnakeCase } from "../util/helper";
@@ -31,6 +31,19 @@ const Checklist: React.FC<TChecklistProps> = ({ name, addItemText }) => {
     setData(newData);
   };
 
+  const fillFromYesterday = () => {
+    const yesterday = new Date(date);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const yesterdayKey = generateKey(yesterday);
+    const yesterdaysItems = data[yesterdayKey]?.[key] || [];
+    const newItems = yesterdaysItems.map((item: TChecklistItem) => ({
+      ...item,
+      id: uuid4(),
+    }));
+    const newData = { ...data, [curDay]: { ...data[curDay], [key]: newItems } };
+    setData(newData);
+  };
+
   return (
     <div>
       <div
@@ -40,7 +53,7 @@ const Checklist: React.FC<TChecklistProps> = ({ name, addItemText }) => {
         <b>{name}</b>
         <AddItem addItemText={addItemText} onClick={() => addItem("")} />
       </div>
-      {items.map((item: TChecklistItem) => 
+      {items.map((item: TChecklistItem) => (
         <ChecklistInput
           key={item.id}
           item={item}
@@ -65,7 +78,9 @@ const Checklist: React.FC<TChecklistProps> = ({ name, addItemText }) => {
             setData(newData);
           }}
           onDelete={() => {
-            const newItems = items.filter((i: TChecklistItem) => i.id !== item.id);
+            const newItems = items.filter(
+              (i: TChecklistItem) => i.id !== item.id
+            );
             const newData = {
               ...data,
               [curDay]: { ...data[curDay], [key]: newItems },
@@ -73,15 +88,24 @@ const Checklist: React.FC<TChecklistProps> = ({ name, addItemText }) => {
             setData(newData);
           }}
         />
-      )}
+      ))}
       {items.length === 0 && (
-        <div className="todo invisible">
-          <input
-            type="checkbox"
-            className="h-4 w-4 mr-1 text-black border-gray-300 rounded cursor-pointer"
-          />
-          <input type="text" value="" />
-        </div>
+        <>
+          <button
+            className="flex items-center justify-center gap-2 rounded bg-gray-100 hover:bg-gray-200 text-gray-500 w-full mt-2 py-2"
+            onClick={fillFromYesterday}
+          >
+            <ArrowUturnLeftIcon className="h-3 w-3" />
+            Fill from yesterday
+          </button>
+          <div className="todo invisible" style={{ marginTop: -40 }}>
+            <input
+              type="checkbox"
+              className="h-4 w-4 text-black border-gray-300 rounded cursor-pointer"
+            />
+            <input type="text" value="" />
+          </div>
+        </>
       )}
     </div>
   );
