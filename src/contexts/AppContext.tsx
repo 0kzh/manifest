@@ -1,5 +1,5 @@
 import React, { useState, useContext, createContext, useEffect } from "react";
-import { generateKey, getKey, setKey } from "../util/helper";
+import { generateKey, getKey, isExtensionMode, setKey } from "../util/helper";
 import { EventData, PersistedData } from "../util/types";
 
 export type TAppContextValue = {
@@ -8,6 +8,7 @@ export type TAppContextValue = {
   data: PersistedData;
   setData: (data: PersistedData) => void;
   inputFocused: boolean;
+  setInputFocused: (focused: boolean) => void;
 };
 
 const useAppData = (): TAppContextValue => {
@@ -36,12 +37,27 @@ const useAppData = (): TAppContextValue => {
     }
   }, [data, date])
 
+  // when date changes, update title
+  useEffect(() => {
+    if (isExtensionMode) {
+      document.title = "New Tab";
+    } else {
+      // set title formatted with short month
+      document.title = new Date().toLocaleString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    }
+  } , [date]);
+
   return {
     date,
     setDate,
     data,
     setData,
     inputFocused,
+    setInputFocused,
   };
 };
 

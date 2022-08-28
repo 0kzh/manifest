@@ -116,7 +116,6 @@ const Calendar: React.FC<Props> = (props: Props) => {
                 });
               }}
               deleteEvent={(id: string) => {
-                console.log("triggered")
                 const key = generateKey(date);
                 setData({
                   ...data,
