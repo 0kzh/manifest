@@ -153,6 +153,11 @@ body {
   outline: none;
 }
 
+.react-datepicker__navigation {
+  height: 0 !important;
+  top: 12px !important;
+}
+
 .time-select {
   display: grid;
   grid-template-columns: auto auto;

@@ -26,6 +26,7 @@ function App() {
   const [startTime, setStartTime] = useState<number>(DEFAULT_START_TIME);
   const [endTime, setEndTime] = useState<number>(DEFAULT_END_TIME);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
+  const [datePickerOpen, setDatePickerOpen] = useState<boolean>(false);
 
   const leftPress = useKeyPress("ArrowLeft");
   const rightPress = useKeyPress("ArrowRight");
@@ -130,6 +131,7 @@ function App() {
             >
               <label>Start Time</label>
               <select
+                className="pl-2 pr-8 py-0 rounded text-xs border-gray-500 focus:outline-none"
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                   setStartTime(parseInt(e.target.value))
                 }
@@ -143,6 +145,7 @@ function App() {
               </select>
               <label>End Time</label>
               <select
+                className="pl-2 pr-8 py-0 rounded text-xs border-gray-500 focus:outline-none"
                 onChange={(e: React.ChangeEvent<HTMLSelectElement>) =>
                   setEndTime(parseInt(e.target.value))
                 }
@@ -163,7 +166,17 @@ function App() {
             <DatePicker
               selected={date}
               onChange={(date: Date) => setDate(date)}
-              customInput={<DateDisplay onClick={() => {}} />}
+              customInput={
+                datePickerOpen ? (
+                  <div className="pointer-events-none cursor-pointer">
+                    <b>{formatDate(date)}</b>
+                  </div>
+                ) : (
+                  <DateDisplay onClick={() => {}} />
+                )
+              }
+              onCalendarOpen={() => setDatePickerOpen(true)}
+              onCalendarClose={() => setDatePickerOpen(false)}
               dayClassName={() => "day"}
             />
           </div>
@@ -171,10 +184,7 @@ function App() {
         </div>
       </div>
       <div className="flex w-full gap-4">
-        <Calendar
-          startTime={startTime}
-          endTime={endTime}
-        />
+        <Calendar startTime={startTime} endTime={endTime} />
         <div className="flex flex-col" style={{ gap: 48, marginTop: -1 }}>
           <Checklist name="TODO" addItemText="Add TODO" />
           <Checklist name="Habits" addItemText="Add Habit" />
