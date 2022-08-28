@@ -1,9 +1,9 @@
 import { TrashIcon } from "@heroicons/react/24/outline";
 import React, { useRef } from "react";
 import styled from "styled-components";
-import { ContextMenuItem } from "../util/types";
+import { ContextMenuItem } from "../../util/types";
 import { TChecklistItem } from "./Checklist";
-import ContextMenu from "./ContextMenu";
+import ContextMenu from "../ContextMenu";
 
 type Props = {
   item: TChecklistItem;

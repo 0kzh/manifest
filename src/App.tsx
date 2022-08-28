@@ -16,8 +16,9 @@ import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
 import { CogIcon } from "@heroicons/react/24/solid";
 import "./App.css";
 import "react-datepicker/dist/react-datepicker.css";
-import Checklist from "./components/Checklist";
+import Checklist from "./components/checklist/Checklist";
 import { useApp } from "./contexts/AppContext";
+import Goals from "./components/goals/Goals";
 
 function App() {
   const { date, setDate, inputFocused } = useApp();
@@ -176,6 +177,7 @@ function App() {
         <div className="flex flex-col" style={{ gap: 48, marginTop: -1 }}>
           <Checklist name="TODO" addItemText="Add TODO" />
           <Checklist name="Habits" addItemText="Add Habit" />
+          <Goals name="Goals" addItemText="Add Goal" />
         </div>
       </div>
     </div>
