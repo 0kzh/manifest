@@ -35,7 +35,7 @@ const GoalInput: React.FC<Props> = ({
     <div className="todo relative" style={{ marginTop: -1 }}>
       <div className="relative">
         <div
-          className="p-1 w-4 h-4 text-center rounded hover:bg-gray-200 cursor-pointer"
+          className="px-1 text-lg text-center rounded hover:bg-gray-200 cursor-pointer"
           onClick={() => setEmojiPickerOpen(!emojiPickerOpen)}
         >
           {item.emoji}

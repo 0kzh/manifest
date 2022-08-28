@@ -188,6 +188,7 @@ body {
   padding-top: 0;
   padding-bottom: 0;
   font-family: 'mono', monospace !important;
+  margin-top: -1px;
   margin-left: 0.5em;
 }
 
