@@ -13,12 +13,13 @@ import {
 } from "./util/helper";
 import { DEFAULT_START_TIME, DEFAULT_END_TIME } from "./util/constants";
 import { ChevronLeftIcon, ChevronRightIcon } from "@heroicons/react/24/outline";
-import { CogIcon } from "@heroicons/react/24/solid";
+import { Cog8ToothIcon } from "@heroicons/react/24/solid";
 import "./App.css";
 import "react-datepicker/dist/react-datepicker.css";
 import Checklist from "./components/checklist/Checklist";
 import { useApp } from "./contexts/AppContext";
 import Goals from "./components/goals/Goals";
+import Reflection from "./components/reflection/Reflection";
 
 function App() {
   const { date, setDate, inputFocused } = useApp();
@@ -118,7 +119,7 @@ function App() {
             ref={settingsBtnRef}
             onClick={() => setSettingsOpen(!settingsOpen)}
           >
-            <CogIcon className="icon-circular settings" />
+            <Cog8ToothIcon className="icon-circular settings" />
           </div>
 
           {settingsOpen && (
@@ -178,6 +179,7 @@ function App() {
           <Checklist name="TODO" addItemText="Add TODO" />
           <Checklist name="Habits" addItemText="Add Habit" />
           <Goals name="Goals" addItemText="Add Goal" />
+          <Reflection />
         </div>
       </div>
     </div>
