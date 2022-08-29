@@ -22,7 +22,7 @@ import Goals from "./components/goals/Goals";
 import Reflection from "./components/reflection/Reflection";
 
 function App() {
-  const { date, setDate, inputFocused } = useApp();
+  const { date, setDate } = useApp();
   const [startTime, setStartTime] = useState<number>(DEFAULT_START_TIME);
   const [endTime, setEndTime] = useState<number>(DEFAULT_END_TIME);
   const [settingsOpen, setSettingsOpen] = useState<boolean>(false);
@@ -30,7 +30,6 @@ function App() {
 
   const leftPress = useKeyPress("ArrowLeft");
   const rightPress = useKeyPress("ArrowRight");
-  const inputFocusedRef = useRef<boolean>(false);
 
   const settingsRef = useRef<HTMLDivElement>(null);
   const settingsBtnRef = useRef<HTMLDivElement>(null);
@@ -88,18 +87,13 @@ function App() {
   }, [settingsRef, settingsBtnRef]);
 
   useEffect(() => {
-    inputFocusedRef.current = inputFocused
-  }, [inputFocused]);
-
-  useEffect(() => {
-    if (leftPress && !inputFocusedRef.current) {
+    if (leftPress) {
       prevDay();
     }
   }, [leftPress]);
 
   useEffect(() => {
-    if (rightPress && !inputFocusedRef.current) {
-      console.log("nextDay")
+    if (rightPress) {
       nextDay();
     }
   }, [rightPress]);

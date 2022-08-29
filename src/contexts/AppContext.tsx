@@ -7,14 +7,11 @@ export type TAppContextValue = {
   setDate: (curDay: Date) => void;
   data: PersistedData;
   setData: (data: PersistedData) => void;
-  inputFocused: boolean;
-  setInputFocused: (focused: boolean) => void;
 };
 
 const useAppData = (): TAppContextValue => {
   const [date, setDate] = useState<Date>(new Date());
   const [data, setData] = useState<PersistedData>({});
-  const [inputFocused, setInputFocused] = useState<boolean>(false);
 
   // on initial load, get events from Chrome storage
   useEffect(() => {
@@ -33,7 +30,6 @@ const useAppData = (): TAppContextValue => {
     const key = generateKey(date);
     if (data[key]) {
       setKey(key, data[key]);
-      setInputFocused(data[key].events?.some((e: EventData) => e.focused));
     }
   }, [data, date])
 
@@ -56,8 +52,6 @@ const useAppData = (): TAppContextValue => {
     setDate,
     data,
     setData,
-    inputFocused,
-    setInputFocused,
   };
 };
 

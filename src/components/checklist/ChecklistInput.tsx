@@ -12,7 +12,12 @@ type Props = {
   onDelete: () => void;
 };
 
-const ChecklistInput: React.FC<Props> = ({ item, onCheck, onChange, onDelete }) => {
+const ChecklistInput: React.FC<Props> = ({
+  item,
+  onCheck,
+  onChange,
+  onDelete,
+}) => {
   const inputRef = useRef<HTMLInputElement>(null);
 
   const menuItems: ContextMenuItem[] = [
@@ -36,11 +41,10 @@ const ChecklistInput: React.FC<Props> = ({ item, onCheck, onChange, onDelete }) 
         type="text"
         value={item.value}
         onChange={onChange}
+        onKeyDown={(e) => e.stopPropagation()}
+        onKeyUp={(e) => e.stopPropagation()}
       />
-      <ContextMenu
-        parentRef={inputRef}
-        items={menuItems}
-      />
+      <ContextMenu parentRef={inputRef} items={menuItems} />
     </div>
   );
 };

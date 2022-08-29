@@ -59,6 +59,8 @@ const GoalInput: React.FC<Props> = ({
         type="text"
         value={item.value}
         onChange={onChange}
+        onKeyDown={(e) => e.stopPropagation()}
+        onKeyUp={(e) => e.stopPropagation()}
       />
       <ContextMenu parentRef={inputRef} items={menuItems} />
     </div>

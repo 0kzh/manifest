@@ -171,10 +171,12 @@ const Event: React.FC<Props> = (props: Props) => {
               e.button === 0 && (event.focused ? e.stopPropagation() : () => {})
             }
             onKeyDown={(e) => {
+              e.stopPropagation();
               if (e.key === "Enter") {
                 blurInput();
               }
             }}
+            onKeyUp={(e) => e.stopPropagation()}
           />
         </Entry>
       </div>
